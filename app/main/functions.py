@@ -136,6 +136,8 @@ def best_word(possible_words, frequencies):
 
 def wordle_solver(guess, result):
     #print(word_list)
+    if result == "00000":
+        return True
     global possible_words
     possible_words = remove_word(result, guess, possible_words)
     if len(possible_words) == 0:
