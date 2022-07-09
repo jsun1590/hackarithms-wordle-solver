@@ -16,8 +16,8 @@ def index():
 def process_words():
     data = request.get_json() or {}
     word_list = data["words"]
-    # if not check_word(word_list[-1]):
-    #     return jsonify({"error": "Not a word"}), 400
+    if not check_word(word_list[-1]):
+        return jsonify({"error": "Not a word"}), 400
 
     response = jsonify(word_list)
     response.status_code = 201
