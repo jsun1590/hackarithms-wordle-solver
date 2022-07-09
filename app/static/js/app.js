@@ -1,8 +1,14 @@
+/*
+bg code
+0 = green
+1 = yellow
+2 = gray
+*/
+
 const NUMBER_OF_GUESSES = 6;
 const NUMBER_OF_LETTERS = 5;
 
 let currentGuess = 0;
-let currentWord = "";
 
 const initBoard = () => {
   let board = document.getElementById("board");
@@ -14,7 +20,7 @@ const initBoard = () => {
     for (let j = 0; j < NUMBER_OF_LETTERS; j++) {
       let cell = document.createElement("div");
       cell.className = "guess-cell";
-      cell.setAttribute("bg", "0");
+      cell.setAttribute("bg", "-1");
       cell.id = `${i}-${j}`;
       row.appendChild(cell);
     }
@@ -27,6 +33,8 @@ const changeBgColor = (e) => {
     return;
   }
   const colors = ["#6aaa64", "#c9b458", "#787c7e"];
+
+  e.target.style.color = "white";
 
   let index = parseInt(e.target.getAttribute("bg"));
   index = (index + 1) % colors.length;
@@ -49,14 +57,53 @@ const activeGuess = () => {
     }
   }
 };
+
+const displayWord = (data) => {};
+
+const sendData = () => {
+  payload = [];
+  for (let i = 0; i < NUMBER_OF_GUESSES; i++) {
+    let word = {};
+    for (let j = 0; j < NUMBER_OF_LETTERS; j++) {
+      word[j] = [
+        document.getElementById(`${i}-${j}`).innerText,
+        document.getElementById(`${i}-${j}`).getAttribute("bg"),
+      ];
+    }
+    payload.push(word);
+  }
+
+  payload = JSON.stringify(payload);
+  console.log(payload);
+
+  fetch("127.0.0.1:5000/api/process_words", {
+    method: "POST",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+    body: payload,
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      displayWord(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 enterText = (e) => {
   e = e || window.event;
 
+  // test if char is a letter
   if (/^[A-Za-z]$/.test(e.key)) {
     for (let i = 0; i < NUMBER_OF_LETTERS; i++) {
       if (document.getElementById(`${currentGuess}-${i}`).innerText === "") {
-        document.getElementById(`${currentGuess}-${i}`).innerText = e.key;
-        currentWord += e.key;
+        document.getElementById(`${currentGuess}-${i}`).innerText =
+          e.key.toUpperCase();
         break;
       }
     }
@@ -64,23 +111,30 @@ enterText = (e) => {
     for (let i = NUMBER_OF_LETTERS - 1; i >= 0; i--) {
       if (document.getElementById(`${currentGuess}-${i}`).innerText !== "") {
         document.getElementById(`${currentGuess}-${i}`).innerText = "";
-        currentWord = currentWord.slice(0, -1);
         break;
       }
     }
   } else if (e.key === "Enter") {
-    if (currentWord.length !== NUMBER_OF_LETTERS) return;
+    if (currentGuess >= NUMBER_OF_GUESSES - 1) return;
+    let currentWord = 0;
     for (let i = 0; i < NUMBER_OF_LETTERS; i++) {
+      if (document.getElementById(`${currentGuess}-${i}`).innerText !== "") {
+        currentWord += 1;
+      }
+
       if (
         document.getElementById(`${currentGuess}-${i}`).getAttribute("bg") ===
-        "0"
+        "-1"
       ) {
         return;
       }
-      currentGuess++;
-      currentWord = "";
-      activeGuess();
     }
+    if (currentWord !== NUMBER_OF_LETTERS) return;
+    currentGuess++;
+
+    sendData();
+
+    activeGuess();
   }
 };
 initBoard();

@@ -2,7 +2,7 @@
 
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
-file = open('wordlist.txt', 'r')
+file = open("wordlist.txt", "r")
 wordlist = ((file.read()).strip()).split()
 
 # Finds grey letters in the guess
@@ -11,10 +11,11 @@ wordlist = ((file.read()).strip()).split()
 def greyLetters(result, guess):
     greyLettersArray = []
     for i in range(0, 5):
-        if result[i] == 'w':
+        if result[i] == "w":
             greyLettersArray.append(guess[i])
 
     return greyLettersArray
+
 
 # Finds yellow letters in the guess
 
@@ -22,10 +23,11 @@ def greyLetters(result, guess):
 def yellowLetters(result, guess):
     yellowLettersArray = []
     for i in range(0, 5):
-        if result[i] == 'y':
+        if result[i] == "y":
             yellowLettersArray.append([guess[i], i])
 
     return yellowLettersArray
+
 
 # Finds green letters in the guess
 
@@ -106,6 +108,7 @@ def removeWord(result, guess, possibleWords):
 
     return acceptableWords5
 
+
 # Finds frequencies of letters in each position
 
 
@@ -120,6 +123,7 @@ def letterFreq(possibleWords):
         arr.update({c: freq})
 
     return arr
+
 
 # Gives score based on frequency of letters
 
@@ -152,21 +156,30 @@ def bestWord(possibleWords, frequencies):
 
     return bestWord
 
+
 def checkWord(word):
-  while(word not in wordlist):
-    print("not in word list")
-    word = input("Guess:")
-  return word
-  
+    # while word not in wordlist:
+    # print("not in word list")
+    # word = input("Guess:")
+    # return word
+    return word in wordlist
+
+
 def checkLength(guess):
-  while(len(guess) != 5):
-    print("incorrect length")
-    guess = input("Result:")
-  return guess
+    while len(guess) != 5:
+        print("incorrect length")
+        guess = input("Result:")
+    return guess
+
 
 def wordleSolver(possibleWords):
-    print("Suggested starting word is:", bestWord(possibleWords, letterFreq(possibleWords)))
-    print("Guess and then result. Syntax for result is 'g' for green, 'y' for yellow and 'w' for wrong")
+    print(
+        "Suggested starting word is:",
+        bestWord(possibleWords, letterFreq(possibleWords)),
+    )
+    print(
+        "Guess and then result. Syntax for result is 'g' for green, 'y' for yellow and 'w' for wrong"
+    )
     guess = input("Guess:")
     guess = checkWord(guess)
     result = input("Result:")
@@ -191,4 +204,6 @@ def wordleSolver(possibleWords):
         print(counter, "guesses.")
 
 
-wordleSolver(wordlist)
+if __name__ == "__main__":
+    # if "__main__" == __name__:
+    wordleSolver(wordlist)
