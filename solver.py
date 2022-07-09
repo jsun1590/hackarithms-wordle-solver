@@ -1,108 +1,72 @@
 # Global Variables
 
 
+import itertools
+
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 file = open("wordlist.txt", "r")
 wordlist = ((file.read()).strip()).split()
 
 # Finds grey letters in the guess
-
-
 def greyLetters(result, guess):
-    greyLettersArray = []
-    for i in range(0, 5):
-        if result[i] == "w":
-            greyLettersArray.append(guess[i])
-
-    return greyLettersArray
+    return [guess[i] for i in range(5) if result[i] == "w"]
 
 
 # Finds yellow letters in the guess
-
-
 def yellowLetters(result, guess):
-    yellowLettersArray = []
-    for i in range(0, 5):
-        if result[i] == "y":
-            yellowLettersArray.append([guess[i], i])
-
-    return yellowLettersArray
+    return [[guess[i], i] for i in range(5) if result[i] == "y"]
 
 
 # Finds green letters in the guess
-
-
 def greenLetters(result, guess):
-    greenLettersArray = []
-    for i in range(0, 5):
-        if result[i] == "g":
-            greenLettersArray.append([guess[i], i])
-
-    return greenLettersArray
+    return [[guess[i], i] for i in range(5) if result[i] == "g"]
 
 
 def removeWord(result, guess, possibleWords):
     greyLettersArray = greyLetters(result, guess)
     yellowLettersArray = yellowLetters(result, guess)
     greenLettersArray = greenLetters(result, guess)
-    goodLetters = []
+    goodLetters = [g[0] for g in greenLettersArray]
 
-    for g in greenLettersArray:
-        goodLetters.append(g[0])
-    for y in yellowLettersArray:
-        goodLetters.append(y[0])
-
+    goodLetters.extend(y[0] for y in yellowLettersArray)
     acceptableWords1 = []
     for w in possibleWords:
-        check = 0
-        for b in greyLettersArray:
-            if b in w:
-                if b in goodLetters:
-                    pass
-                else:
-                    check = 1
-                    break
+        check = next(
+            (1 for b in greyLettersArray if b in w and b not in goodLetters), 0
+        )
+
         if check == 0:
             acceptableWords1.append(w)
 
     acceptableWords2 = []
     for w in acceptableWords1:
-        check = 0
-        for g in greenLettersArray:
-            if w[g[1]] != g[0]:
-                check = 1
-                break
+        check = next((1 for g in greenLettersArray if w[g[1]] != g[0]), 0)
         if check == 0:
             acceptableWords2.append(w)
 
     acceptableWords3 = []
     for w in acceptableWords2:
-        check = 0
-        for p in yellowLettersArray:
-            if w[p[1]] == p[0]:
-                check = 1
-                break
+        check = next((1 for p in yellowLettersArray if w[p[1]] == p[0]), 0)
         if check == 0:
             acceptableWords3.append(w)
 
     acceptableWords4 = []
     for w in acceptableWords3:
-        check = 0
-        for g in goodLetters:
-            if g not in w:
-                check = 1
-                break
+        check = next((1 for g in goodLetters if g not in w), 0)
         if check == 0:
             acceptableWords4.append(w)
 
     acceptableWords5 = []
     for w in acceptableWords4:
-        check = 0
-        for b in greyLettersArray:
-            if b in greenLettersArray:
-                if w.count(b) != greenLettersArray.count(b):
-                    check = 1
-                    break
+        check = next(
+            (
+                1
+                for b in greyLettersArray
+                if b in greenLettersArray and w.count(b) != greenLettersArray.count(b)
+            ),
+            0,
+        )
+
         if check == 0:
             acceptableWords5.append(w)
 
@@ -110,17 +74,14 @@ def removeWord(result, guess, possibleWords):
 
 
 # Finds frequencies of letters in each position
-
-
 def letterFreq(possibleWords):
     arr = {}
     for c in alphabet:
         freq = [0, 0, 0, 0, 0]
-        for i in range(0, 5):
-            for w in possibleWords:
-                if w[i] == c:
-                    freq[i] += 1
-        arr.update({c: freq})
+        for i, w in itertools.product(range(5), possibleWords):
+            if w[i] == c:
+                freq[i] += 1
+        arr[c] = freq
 
     return arr
 
@@ -131,16 +92,15 @@ def letterFreq(possibleWords):
 def wordScore(possibleWords, frequencies):
     words = {}
     maxFreq = [0, 0, 0, 0, 0]
-    for c in frequencies:
-        for i in range(0, 5):
-            if maxFreq[i] < frequencies[c][i]:
-                maxFreq[i] = frequencies[c][i]
+    for c, i in itertools.product(frequencies, range(5)):
+        if maxFreq[i] < frequencies[c][i]:
+            maxFreq[i] = frequencies[c][i]
     for w in possibleWords:
         score = 1
-        for i in range(0, 5):
+        for i in range(5):
             c = w[i]
             score *= 1 + (frequencies[c][i] - maxFreq[i]) ** 2
-        words.update({w: score})
+        words[w] = score
 
     return words
 
@@ -158,11 +118,10 @@ def bestWord(possibleWords, frequencies):
 
 
 def checkWord(word):
-    # while word not in wordlist:
-    # print("not in word list")
-    # word = input("Guess:")
-    # return word
-    return word in wordlist
+    while word not in wordlist:
+        print("not in word list")
+        word = input("Guess:")
+    return word
 
 
 def checkLength(guess):
