@@ -13,8 +13,7 @@ from app.main.functions import (
 @bp.route("/", methods=["GET", "POST"])
 @bp.route("/index", methods=["GET", "POST"])
 def index():
-    most_likely_word = "Hello"
-    return render_template("index.html", display_likely_word=most_likely_word)
+    return render_template("index.html")
 
 
 @bp.route("/api/validate_word", methods=["POST"])
