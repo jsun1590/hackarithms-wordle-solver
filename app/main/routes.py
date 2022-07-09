@@ -14,10 +14,8 @@ def index():
 
 @bp.route("/api/process_words", methods=["POST"])
 def process_words():
-    data = request.get_json() or {}
-    word_list = data["words"]
+    word_list = request.get_json() or {}
     recent_word = combine_letters(word_list[-1])
-    print(recent_word)
     if not check_word(recent_word):
         return jsonify({"error": "Not a word"}), 400
     response = jsonify(word_list)
