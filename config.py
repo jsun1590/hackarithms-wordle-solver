@@ -8,5 +8,5 @@ load_dotenv(os.path.join(basedir, ".env"))
 
 
 class Config(object):
-    FLASK_APP = config("SECRET_KEY", default="app.py")
+    FLASK_APP = config("FLASK_APP", default="main.py")
     SECRET_KEY = config("SECRET_KEY", default="BRUH-MOMENT")

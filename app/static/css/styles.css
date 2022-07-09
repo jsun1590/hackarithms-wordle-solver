@@ -1,0 +1,20 @@
+#board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.guess-row {
+  display: flex;
+}
+
+.guess-cell {
+  height: 50px;
+
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: solid 1px black;
+  height: 10px;
+  width: 10px;
+}
