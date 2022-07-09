@@ -1,9 +1,9 @@
 # Global Variables
 
-
-alphabet = "abcdefghijklmnopqrstuvwxyz"
-file = open("wordlist.txt", "r")
-wordlist = ((file.read()).strip()).split()
+wordlist = []
+ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+with open("wordlist.txt", "r", encoding="utf8") as file:
+    wordlist = ((file.read()).strip()).split()
 
 
 def check_word(word):
