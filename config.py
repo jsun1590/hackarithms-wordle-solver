@@ -10,4 +10,3 @@ load_dotenv(os.path.join(basedir, ".env"))
 class Config(object):
     FLASK_APP = config("SECRET_KEY", default="app.py")
     SECRET_KEY = config("SECRET_KEY", default="BRUH-MOMENT")
-    SECRET_KEY = config("STEAM_API_KEY", default="STEAM")
