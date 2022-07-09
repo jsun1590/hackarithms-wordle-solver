@@ -1,5 +1,4 @@
 from flask import Flask
-from app.auth import bp as auth_bp
 from app.main import bp as main_bp
 
 
