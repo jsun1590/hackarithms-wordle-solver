@@ -60,7 +60,8 @@ const activeGuess = () => {
 
 const displayWord = (data) => {
     let suggestedWord = document.getElementById("suggested-word");
-    suggestedWord.innerText = data.word;
+    console.log(data);
+    suggestedWord.innerText = data;
 };
 
 const sendData = () => {
