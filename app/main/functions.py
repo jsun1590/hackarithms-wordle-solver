@@ -5,9 +5,13 @@ ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 with open("wordlist.txt", "r", encoding="utf8") as file:
     wordlist = ((file.read()).strip()).split()
 
+
 def combine_letters(words_list):
-    for item in words_list.items():
-    
+    word = ""
+    for _, values in words_list.items():
+        word += values[0]
+    return word.lower()
+
 
 def check_word(word):
     return word in wordlist
@@ -121,42 +125,3 @@ def bestWord(possibleWords, frequencies):
             bestWord = i
 
     return bestWord
-
-
-def checkLength(guess):
-    while len(guess) != 5:
-        print("incorrect length")
-        guess = input("Result:")
-    return guess
-
-
-def wordleSolver(possibleWords):
-    print(
-        "Suggested starting word is:",
-        bestWord(possibleWords, letterFreq(possibleWords)),
-    )
-    print(
-        "Guess and then result. Syntax for result is 'g' for green, 'y' for yellow and 'w' for wrong"
-    )
-    guess = input("Guess:")
-    guess = checkWord(guess)
-    result = input("Result:")
-    result = checkLength(result)
-    counter = 1
-    while result != "ggggg" and counter < 6:
-        possibleWords = removeWord(result, guess, possibleWords)
-        if len(possibleWords) == 0:
-            break
-        suggestion = bestWord(possibleWords, letterFreq(possibleWords))
-        print("The suggested word is:", suggestion)
-        guess = input("Guess:")
-        guess = checkWord(guess)
-        result = input("Enter your new result:")
-        result = checkLength(result)
-        counter += 1
-    if len(possibleWords) == 0:
-        print("Run again")
-    elif counter == 6 and result != "ggggg":
-        print("Fail")
-    else:
-        print(counter, "guesses.")
