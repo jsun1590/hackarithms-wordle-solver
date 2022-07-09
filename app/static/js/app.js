@@ -58,7 +58,10 @@ const activeGuess = () => {
     }
 };
 
-const displayWord = (data) => {};
+const displayWord = (data) => {
+    let suggestedWord = document.getElementById("suggested-word");
+    suggestedWord.innerText = data.word;
+};
 
 const sendData = () => {
     payload = [];
