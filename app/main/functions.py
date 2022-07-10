@@ -3,7 +3,6 @@ import itertools
 
 wordlist = []
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
-counter = 1
 with open("wordlist.txt", "r", encoding="utf8") as file:
     wordlist = ((file.read()).strip()).split()
 possible_words = wordlist
@@ -27,7 +26,7 @@ def check_word(word):
 
 # Finds grey letters in the guess
 def grey_letters(result, guess):
-    return [guess[i] for i in range(5) if result[i] == "2"]
+    return [guess[i] for i in range(5) if result[i] == "0"]
 
 
 # Finds yellow letters in the guess
@@ -37,7 +36,7 @@ def yellow_letters(result, guess):
 
 # Finds green letters in the guess
 def green_letters(result, guess):
-    return [[guess[i], i] for i in range(5) if result[i] == "0"]
+    return [[guess[i], i] for i in range(5) if result[i] == "2"]
 
 
 def remove_word(result, guess, possible_words):
@@ -47,35 +46,35 @@ def remove_word(result, guess, possible_words):
     good_letters = [g[0] for g in green_array]
 
     good_letters.extend(y[0] for y in yellow_array)
-    acceptable_words1 = []
+    acceptable1 = []
     for w in possible_words:
         check = next(
             (1 for b in grey_array if b in w and b not in good_letters), 0
         )
 
         if check == 0:
-            acceptable_words1.append(w)
+            acceptable1.append(w)
 
-    acceptable_words2 = []
-    for w in acceptable_words1:
+    acceptable2 = []
+    for w in acceptable1:
         check = next((1 for g in green_array if w[g[1]] != g[0]), 0)
         if check == 0:
-            acceptable_words2.append(w)
+            acceptable2.append(w)
 
-    acceptable_words3 = []
-    for w in acceptable_words2:
+    acceptable3 = []
+    for w in acceptable2:
         check = next((1 for p in yellow_array if w[p[1]] == p[0]), 0)
         if check == 0:
-            acceptable_words3.append(w)
+            acceptable3.append(w)
 
-    acceptable_words4 = []
-    for w in acceptable_words3:
+    acceptable4 = []
+    for w in acceptable3:
         check = next((1 for g in good_letters if g not in w), 0)
         if check == 0:
-            acceptable_words4.append(w)
+            acceptable4.append(w)
 
-    acceptable_words5 = []
-    for w in acceptable_words4:
+    acceptable5 = []
+    for w in acceptable4:
         check = next(
             (
                 1
@@ -86,9 +85,9 @@ def remove_word(result, guess, possible_words):
         )
 
         if check == 0:
-            acceptable_words5.append(w)
+            acceptable5.append(w)
 
-    return acceptable_words5
+    return acceptable5
 
 
 # Finds frequencies of letters in each position
@@ -96,6 +95,7 @@ def letter_freq(possible_words):
     arr = {}
     for c in ALPHABET:
         freq = [0, 0, 0, 0, 0]
+        #print(possible_words)
         for i, w in itertools.product(range(5), possible_words):
             if w[i] == c:
                 freq[i] += 1
@@ -136,13 +136,15 @@ def best_word(possible_words, frequencies):
 
 def wordle_solver(guess, result):
     #print(word_list)
-    if result == "00000":
+    if result == "22222":
         return True
     global possible_words
     possible_words = remove_word(result, guess, possible_words)
+    #print("pw", possible_words)
     if len(possible_words) == 0:
         return False
-    print(possible_words)
+    #print(possible_words)
     suggestion = best_word(possible_words, letter_freq(possible_words))
-    print("SUGGESTION:", suggestion)
-    return suggestion
+    #print("SUGGESTION:", suggestion)
+
+    return possible_words

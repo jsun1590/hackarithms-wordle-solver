@@ -1,3 +1,4 @@
+from ast import JoinedStr
 from flask import render_template
 from app.main import bp
 from flask import jsonify, request, abort
@@ -7,6 +8,8 @@ from app.main.functions import (
     check_word,
     wordle_solver,
     combine_results,
+    best_word,
+    letter_freq
 )
 
 
@@ -33,7 +36,18 @@ def process_words():
         response.status_code = 201
         return response
     recent_result = combine_results(word_list[-1])
-    suggested_word = wordle_solver(recent_word, recent_result)
-    response = jsonify(suggested_word)
+    suggested_words = wordle_solver(recent_word, recent_result)
+    #print(suggested_words)
+    if(suggested_words is True):
+        response = jsonify("Won")
+        return response
+    if(not suggested_words):
+        response = jsonify("Lost")
+        return response
+    suggested_word = best_word(suggested_words, letter_freq(suggested_words))
+    response = jsonify(suggested_word, suggested_words)
+    #print("SUGGESTION:", suggested_word)
+    #print(suggested_words)
+    #print(response)
     response.status_code = 201
     return response
