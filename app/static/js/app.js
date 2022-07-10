@@ -9,7 +9,7 @@ const NUMBER_OF_GUESSES = 6;
 const NUMBER_OF_LETTERS = 5;
 
 let currentGuess = 0;
-let validWord = false;
+// let validWord = false;
 
 const initBoard = () => {
     let board = document.getElementById("board");
@@ -65,36 +65,36 @@ const displayWord = (data) => {
     suggestedWord.innerText = data;
 };
 
-// const checkWord = async () => {
-//     let payload2 = [];
-//     for (let i = 0; i < currentGuess + 1; i++) {
-//         let word = {};
-//         for (let j = 0; j < NUMBER_OF_LETTERS; j++) {
-//             word[j] = [
-//                 document.getElementById(`${i}-${j}`).innerText,
-//                 document.getElementById(`${i}-${j}`).getAttribute("bg"),
-//             ];
-//         }
-//         payload2.push(word);
-//     }
+const checkWord = async () => {
+    let payload2 = [];
+    for (let i = 0; i < currentGuess + 1; i++) {
+        let word = {};
+        for (let j = 0; j < NUMBER_OF_LETTERS; j++) {
+            word[j] = [
+                document.getElementById(`${i}-${j}`).innerText,
+                document.getElementById(`${i}-${j}`).getAttribute("bg"),
+            ];
+        }
+        payload2.push(word);
+    }
 
-//     payload2 = JSON.stringify(payload2);
-//     console.log(payload2);
+    payload2 = JSON.stringify(payload2);
+    console.log(payload2);
 
-//     let res = await fetch("api/validate_word", {
-//         method: "POST",
-//         headers: {
-//             Accept: "application/json, text/plain, */*",
-//             "Content-Type": "application/json",
-//         },
-//         body: payload2,
-//     });
+    let res = await fetch("api/validate_word", {
+        method: "POST",
+        headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+        },
+        body: payload2,
+    });
 
-//     let data = await res.json();
-//     console.log("data", await data);
-//     validWord = (await data) === "true";
-//     return validWord;
-// };
+    let data = await res.json();
+    console.log("data", await data);
+    let validWord = (await data) === "true";
+    return validWord;
+};
 
 const sendData = () => {
     let payload = [];
@@ -124,6 +124,10 @@ const sendData = () => {
             return res.json();
         })
         .then((data) => {
+            if (data === "Not a word") {
+                currentGuess--;
+                activeGuess();
+            }
             displayWord(data);
         })
         .catch((err) => {
@@ -173,11 +177,10 @@ enterText = (e) => {
             }
         }
         if (currentWord !== NUMBER_OF_LETTERS) return;
-        // if (!checkWord()) {
-        //     console.log("not a valid word");
-        //     console.log("check word", validWord);
-        //     return;
-        // }
+        if (!checkWord()) {
+            console.log("not a valid word");
+            return;
+        }
         currentGuess++;
         sendData();
 
