@@ -3,7 +3,6 @@ import itertools
 
 wordlist = []
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
-counter = 1
 with open("wordlist.txt", "r", encoding="utf8") as file:
     wordlist = ((file.read()).strip()).split()
 possible_words = wordlist
@@ -47,35 +46,35 @@ def remove_word(result, guess, possible_words):
     good_letters = [g[0] for g in green_array]
 
     good_letters.extend(y[0] for y in yellow_array)
-    acceptable_words1 = []
+    acceptable1 = []
     for w in possible_words:
         check = next(
             (1 for b in grey_array if b in w and b not in good_letters), 0
         )
 
         if check == 0:
-            acceptable_words1.append(w)
+            acceptable1.append(w)
 
-    acceptable_words2 = []
-    for w in acceptable_words1:
+    acceptable2 = []
+    for w in acceptable1:
         check = next((1 for g in green_array if w[g[1]] != g[0]), 0)
         if check == 0:
-            acceptable_words2.append(w)
+            acceptable2.append(w)
 
-    acceptable_words3 = []
-    for w in acceptable_words2:
+    acceptable3 = []
+    for w in acceptable2:
         check = next((1 for p in yellow_array if w[p[1]] == p[0]), 0)
         if check == 0:
-            acceptable_words3.append(w)
+            acceptable3.append(w)
 
-    acceptable_words4 = []
-    for w in acceptable_words3:
+    acceptable4 = []
+    for w in acceptable3:
         check = next((1 for g in good_letters if g not in w), 0)
         if check == 0:
-            acceptable_words4.append(w)
+            acceptable4.append(w)
 
-    acceptable_words5 = []
-    for w in acceptable_words4:
+    acceptable5 = []
+    for w in acceptable4:
         check = next(
             (
                 1
@@ -86,9 +85,9 @@ def remove_word(result, guess, possible_words):
         )
 
         if check == 0:
-            acceptable_words5.append(w)
+            acceptable5.append(w)
 
-    return acceptable_words5
+    return acceptable5
 
 
 # Finds frequencies of letters in each position
