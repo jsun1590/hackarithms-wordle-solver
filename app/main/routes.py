@@ -7,6 +7,8 @@ from app.main.functions import (
     check_word,
     wordle_solver,
     combine_results,
+    best_word,
+    letter_freq
 )
 
 
@@ -29,7 +31,11 @@ def process_words():
     word_list = request.get_json() or {}
     recent_word = combine_letters(word_list[-1])
     recent_result = combine_results(word_list[-1])
-    suggested_word = wordle_solver(recent_word, recent_result)
-    response = jsonify(suggested_word)
+    suggested_words = wordle_solver(recent_word, recent_result)
+    suggested_word = best_word(suggested_words, letter_freq(suggested_words))
+    response = jsonify(suggested_word, suggested_words)
+    #print("SUGGESTION:", suggested_word)
+    #print(suggested_words)
+    print(response)
     response.status_code = 201
     return response

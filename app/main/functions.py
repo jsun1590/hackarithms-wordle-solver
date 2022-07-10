@@ -142,7 +142,8 @@ def wordle_solver(guess, result):
     possible_words = remove_word(result, guess, possible_words)
     if len(possible_words) == 0:
         return False
-    print(possible_words)
+    #print(possible_words)
     suggestion = best_word(possible_words, letter_freq(possible_words))
-    print("SUGGESTION:", suggestion)
-    return suggestion
+    #print("SUGGESTION:", suggestion)
+
+    return possible_words
