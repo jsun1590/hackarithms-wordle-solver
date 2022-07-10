@@ -27,7 +27,7 @@ def check_word(word):
 
 # Finds grey letters in the guess
 def grey_letters(result, guess):
-    return [guess[i] for i in range(5) if result[i] == "2"]
+    return [guess[i] for i in range(5) if result[i] == "0"]
 
 
 # Finds yellow letters in the guess
@@ -37,7 +37,7 @@ def yellow_letters(result, guess):
 
 # Finds green letters in the guess
 def green_letters(result, guess):
-    return [[guess[i], i] for i in range(5) if result[i] == "0"]
+    return [[guess[i], i] for i in range(5) if result[i] == "2"]
 
 
 def remove_word(result, guess, possible_words):
@@ -96,6 +96,7 @@ def letter_freq(possible_words):
     arr = {}
     for c in ALPHABET:
         freq = [0, 0, 0, 0, 0]
+        #print(possible_words)
         for i, w in itertools.product(range(5), possible_words):
             if w[i] == c:
                 freq[i] += 1
@@ -136,10 +137,11 @@ def best_word(possible_words, frequencies):
 
 def wordle_solver(guess, result):
     #print(word_list)
-    if result == "00000":
+    if result == "22222":
         return True
     global possible_words
     possible_words = remove_word(result, guess, possible_words)
+    #print("pw", possible_words)
     if len(possible_words) == 0:
         return False
     #print(possible_words)
