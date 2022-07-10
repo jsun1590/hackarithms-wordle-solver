@@ -60,6 +60,11 @@ const activeGuess = () => {
 };
 
 const displayWord = (data) => {
+    parent = document.getElementById("suggested-words");
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+
     if (typeof data === "string") {
         document.getElementById("suggested-words").innerText = data.toUpperCase();
         return;
