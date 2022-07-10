@@ -9,14 +9,24 @@ from app.main.functions import (
     wordle_solver,
     combine_results,
     best_word,
-    letter_freq
+    letter_freq,
+    reset_state
 )
 
 
 @bp.route("/", methods=["GET", "POST"])
 @bp.route("/index", methods=["GET", "POST"])
 def index():
+    reset_state()
     return render_template("index.html")
+
+
+@bp.route("/api/validate_word", methods=["POST"])
+def validate_word():
+    word_list = request.get_json() or {}
+    print(word_list)
+    recent_word = combine_letters(word_list[-1])
+    return jsonify(check_word(recent_word))
 
 
 @bp.route("/api/process_words", methods=["POST"])

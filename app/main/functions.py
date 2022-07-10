@@ -148,3 +148,9 @@ def wordle_solver(guess, result):
     #print("SUGGESTION:", suggestion)
 
     return possible_words
+
+def reset_state():
+    global possible_words
+    possible_words = wordlist
+    
+    return
