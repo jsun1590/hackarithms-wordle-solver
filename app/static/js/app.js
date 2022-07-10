@@ -59,9 +59,22 @@ const activeGuess = () => {
 };
 
 const displayWord = (data) => {
-    let suggestedWord = document.getElementById("suggested-word");
-    console.log(data);
-    suggestedWord.innerText = data;
+    if (typeof data === "string") {
+        document.getElementById("suggested-words").innerText = data.toUpperCase();
+        return;
+    }
+
+    let suggestedWords = document.getElementById("suggested-words");
+    let wordElem = suggestedWords.appendChild(document.createElement("p"))
+    wordElem.innerText = data[0].toUpperCase();
+
+    let wordArray = data[1].filter((word) => word !== data[0]).slice(0, 4);
+
+    wordArray.forEach((word) => {
+        let wordElem = suggestedWords.appendChild(document.createElement("p"));
+        wordElem.innerText = word.toUpperCase();
+
+    })
 };
 
 const sendData = () => {
