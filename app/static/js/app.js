@@ -1,8 +1,8 @@
 /*
 bg code
-0 = green
+0 = gray
 1 = yellow
-2 = gray
+2 = green
 */
 
 const NUMBER_OF_GUESSES = 6;
@@ -32,7 +32,7 @@ const changeBgColor = (e) => {
     if (currentGuess.toString() !== e.target.id.split("-")[0]) {
         return;
     }
-    const colors = ["#6aaa64", "#c9b458", "#787c7e"];
+    const colors = ["#787c7e", "#c9b458", "#6aaa64"];
 
     e.target.style.color = "white";
 
