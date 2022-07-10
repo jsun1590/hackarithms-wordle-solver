@@ -74,13 +74,6 @@ const displayWord = (data) => {
     let wordElem = suggestedWords.appendChild(document.createElement("p"))
     wordElem.innerText = data[0].toUpperCase();
 
-    let wordArray = data[1].filter((word) => word !== data[0]).slice(0, 4);
-
-    wordArray.forEach((word) => {
-        let wordElem = suggestedWords.appendChild(document.createElement("p"));
-        wordElem.innerText = word.toUpperCase();
-
-    })
 };
 
 const checkWord = async () => {
