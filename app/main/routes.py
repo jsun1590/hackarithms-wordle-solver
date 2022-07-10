@@ -29,7 +29,7 @@ def process_words():
         return response
     recent_result = combine_results(word_list[-1])
     suggested_words = wordle_solver(recent_word, recent_result)
-    print(suggested_words)
+    #print(suggested_words)
     if(suggested_words is True):
         response = jsonify("Won")
         return response
