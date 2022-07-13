@@ -38,7 +38,6 @@ def yellow_letters(result, guess):
 def green_letters(result, guess):
     return [[guess[i], i] for i in range(5) if result[i] == "2"]
 
-
 def remove_word(result, guess, possible_words):
     grey_array = grey_letters(result, guess)
     yellow_array = yellow_letters(result, guess)
@@ -48,22 +47,26 @@ def remove_word(result, guess, possible_words):
     good_letters.extend(y[0] for y in yellow_array)
     acceptable1 = []
     for w in possible_words:
+        #print(w)
         check = next(
             (1 for b in grey_array if b in w and b not in good_letters), 0
         )
-
         if check == 0:
             acceptable1.append(w)
 
     acceptable2 = []
     for w in acceptable1:
-        check = next((1 for g in green_array if w[g[1]] != g[0]), 0)
+        check = next(
+            (1 for g in green_array if w[g[1]] != g[0]), 0
+        )
         if check == 0:
             acceptable2.append(w)
 
     acceptable3 = []
     for w in acceptable2:
-        check = next((1 for p in yellow_array if w[p[1]] == p[0]), 0)
+        check = next(
+            (1 for p in yellow_array if w[p[1]] == p[0]), 0
+        )
         if check == 0:
             acceptable3.append(w)
 
@@ -86,6 +89,9 @@ def remove_word(result, guess, possible_words):
 
         if check == 0:
             acceptable5.append(w)
+
+    if(guess in acceptable5):
+        acceptable5.remove(guess)
 
     return acceptable5
 
