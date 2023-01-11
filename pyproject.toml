@@ -1,20 +1,20 @@
 [tool.poetry]
 name = "hackarithms-team-ni-ma"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "Wordle solver developed for the 2022 Hackarithms hackathon."
+authors = ["https://github.com/jsun1590", "https://github.com/skyheat", "https://github.com/NicholasChoong"]
 license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.10"
 Flask = "^2.1.2"
+python-dotenv = "^0.20.0"
+python-decouple = "^3.6"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
 flake8 = "^4.0.1"
 isort = "^5.10.1"
-python-dotenv = "^0.20.0"
-python-decouple = "^3.6"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
