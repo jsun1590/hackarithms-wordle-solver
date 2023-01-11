@@ -70,6 +70,20 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "gunicorn"
+version = "20.1.0"
+description = "WSGI HTTP Server for UNIX"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.extras]
+eventlet = ["eventlet (>=0.24.1)"]
+gevent = ["gevent (>=1.4.0)"]
+setproctitle = ["setproctitle"]
+tornado = ["tornado (>=0.2)"]
+
+[[package]]
 name = "isort"
 version = "5.11.4"
 description = "A Python utility / library to sort Python imports."
@@ -209,7 +223,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "66ed94d2846bb0bd7c527c4700b488305fd2daa112cf6c5e20b982a25b49eb8a"
+content-hash = "f47b36525c3b4ac84330f3c3d572990e56f0ca408a3960a51b0163887ee4f958"
 
 [metadata.files]
 black = []
@@ -217,6 +231,7 @@ click = []
 colorama = []
 flake8 = []
 flask = []
+gunicorn = []
 isort = []
 itsdangerous = []
 jinja2 = []
